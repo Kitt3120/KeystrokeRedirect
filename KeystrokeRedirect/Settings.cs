@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace KeystrokeRedirect
 {
     class Settings
     {
         public static bool Paused { get; set; } = false;
+        public static Keys PauseKey { get; set; } = Keys.Escape;
         public static bool Multithreading { get; set; } = true;
         public static bool OpenIfMinimized { get; set; } = true;
 

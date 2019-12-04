@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeystrokeRedirector;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,13 +26,22 @@ namespace KeystrokeRedirect
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            if(e.KeyCode == Settings.PauseKey)
+            {
+                Settings.Paused = !Settings.Paused;
+                MessageBox.Show("Paused: " + Settings.Paused);
+            }
+
+            if (Settings.Paused)
+                return;
+
             if (Settings.Multithreading)
-                new Thread(() => Foo(e)).Start();
+                new Thread(() => HandleKeyEvent(e)).Start();
             else
-                Foo(e);
+                HandleKeyEvent(e);
         }
 
-        public void Foo(KeyEventArgs keyEventArgs)
+        public void HandleKeyEvent(KeyEventArgs keyEventArgs)
         {
             keyEventArgs.SuppressKeyPress = Settings.SuppressKeyPress;
 
@@ -45,14 +55,26 @@ namespace KeystrokeRedirect
                     if (windowPlacement.showCmd == 2)
                         WinApiWrapper.ShowWindow(discordWindow.MainWindowHandle, 1);
                 }
+
                 discordWindow.WaitForInputIdle();
                 WinApiWrapper.SetForegroundWindow(discordWindow.MainWindowHandle);
                 Thread.Sleep(Settings.SwapDelay);
-                WinApiWrapper.PostMessage(discordWindow.MainWindowHandle, WinApiWrapper.WM_KEYDOWN, keyEventArgs.KeyCode, IntPtr.Zero);
-                WinApiWrapper.PostMessage(discordWindow.MainWindowHandle, WinApiWrapper.WM_KEYDOWN, Keys.Enter, IntPtr.Zero);
+
+                if (Settings.SendKeyDown)
+                    WinApiWrapper.PostMessage(discordWindow.MainWindowHandle, WinApiWrapper.WM_KEYDOWN, keyEventArgs.KeyCode, IntPtr.Zero);
+                if (Settings.SendKeyUp)
+                    WinApiWrapper.PostMessage(discordWindow.MainWindowHandle, WinApiWrapper.WM_KEYUP, keyEventArgs.KeyCode, IntPtr.Zero);
+
                 Thread.Sleep(Settings.SwapDelay);
                 WinApiWrapper.SetForegroundWindow(Process.GetCurrentProcess().MainWindowHandle);
             }
+        }
+
+        private void buttonSettings_Click(object sender, EventArgs e)
+        {
+            FormSettings settings = new FormSettings();
+            settings.ShowDialog(this);
+            //TODO: Unfocus button
         }
     }
 }
