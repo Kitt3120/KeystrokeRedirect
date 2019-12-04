@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KeystrokeRedirector.Properties
+namespace KeystrokeRedirect.Properties
 {
 
 

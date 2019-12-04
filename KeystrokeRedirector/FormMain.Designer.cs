@@ -1,6 +1,6 @@
-﻿namespace KeystrokeRedirector
+﻿namespace KeystrokeRedirect
 {
-    partial class Form1
+    partial class FormMain
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -28,10 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // FormMain
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            this.ClientSize = new System.Drawing.Size(234, 461);
+            this.MaximumSize = new System.Drawing.Size(250, 500);
+            this.Name = "FormMain";
+            this.Text = "InputRedirector";
+            this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
